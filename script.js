@@ -1,1079 +1,157 @@
-document.addEventListener("DOMContentLoaded", () => {
-
-    /* ==========================================
-       BIRTHDAY SETTINGS
-    ========================================== */
-
-    const BIRTHDAY_NAME = "JELLIAN";
-    const MADE = "Marvin"
-
-
-    /* ==========================================
-       GET ELEMENTS
-    ========================================== */
-
-    const opening = document.getElementById("opening");
-    const app = document.getElementById("app");
-    const openBtn = document.getElementById("openBtn");
-    const wishBtn = document.getElementById("wishBtn");
-    const replayBtn = document.getElementById("replayBtn");
-    const soundBtn = document.getElementById("soundBtn");
-
-    const message = document.getElementById("message");
-    const birthdayName = document.getElementById("birthdayName");
-    const footerName = document.getElementById("footerName");
-
-    const stars = document.getElementById("stars");
-    const balloons = document.getElementById("balloons");
-    const confetti = document.getElementById("confetti");
-
-
-    /* ==========================================
-       SET BIRTHDAY NAME
-    ========================================== */
-
-    if (birthdayName) {
-        birthdayName.textContent = BIRTHDAY_NAME;
-    }
-
-    if (footerName) {
-        footerName.textContent = MADE;
-    }
-
-
-    /* ==========================================
-       CREATE STARS
-    ========================================== */
-
-    if (stars) {
-
-        for (let i = 0; i < 130; i++) {
-
-            const star = document.createElement("span");
-
-            star.className = "star";
-
-            star.style.left =
-                Math.random() * 100 + "%";
-
-            star.style.top =
-                Math.random() * 100 + "%";
-
-            const size =
-                Math.random() * 3 + 1;
-
-            star.style.width = size + "px";
-            star.style.height = size + "px";
-
-            star.style.animationDelay =
-                Math.random() * 3 + "s";
-
-            stars.appendChild(star);
-        }
-    }
-
-
-    /* ==========================================
-       CREATE BALLOONS
-    ========================================== */
-
-    const balloonColors = [
-        "#ff4fb9",
-        "#8b65ff",
-        "#4bdcff",
-        "#ffd45c",
-        "#ff6c7a",
-        "#72e8a0"
-    ];
-
-    if (balloons) {
-
-        for (let i = 0; i < 16; i++) {
-
-            const balloon =
-                document.createElement("span");
-
-            balloon.className = "balloon";
-
-            balloon.style.left =
-                Math.random() * 100 + "%";
-
-            balloon.style.background =
-                balloonColors[
-                    Math.floor(
-                        Math.random() *
-                        balloonColors.length
-                    )
-                ];
-
-            balloon.style.animationDuration =
-                9 + Math.random() * 8 + "s";
-
-            balloon.style.animationDelay =
-                -(Math.random() * 12) + "s";
-
-            balloons.appendChild(balloon);
-        }
-    }
-
-
-    /* ==========================================
-       CAKE ELEMENTS
-    ========================================== */
-
-    const pan =
-        document.querySelector(".cake-pan");
-
-    const bottomLayer =
-        document.querySelector(".bottom-layer");
-
-    const middleLayer =
-        document.querySelector(".middle-layer");
-
-    const topLayer =
-        document.querySelector(".top-layer");
-
-    const berries =
-        document.querySelectorAll(".berry");
-
-    const candles =
-        document.querySelectorAll(".candle");
-
-    const flames =
-        document.querySelectorAll(".flame");
-
-    const sparks =
-        document.querySelectorAll(".spark");
-
-
-    /* ==========================================
-       RESET CAKE
-    ========================================== */
-
-    function resetCake() {
-
-        if (pan) {
-
-            pan.style.opacity = "0";
-
-            pan.style.transform =
-                "translateX(-50%) translateY(120px) scale(.6)";
-        }
-
-        if (bottomLayer) {
-
-            bottomLayer.style.opacity = "0";
-
-            bottomLayer.style.transform =
-                "translateX(-50%) translateY(-150px) scale(.75) rotate(-6deg)";
-        }
-
-        if (middleLayer) {
-
-            middleLayer.style.opacity = "0";
-
-            middleLayer.style.transform =
-                "translateX(-50%) translateY(-130px) scale(.7) rotate(6deg)";
-        }
-
-        if (topLayer) {
-
-            topLayer.style.opacity = "0";
-
-            topLayer.style.transform =
-                "translateX(-50%) translateY(-150px) scale(.6) rotate(-6deg)";
-        }
-
-        berries.forEach(berry => {
-
-            berry.style.opacity = "0";
-
-        });
-
-        candles.forEach(candle => {
-
-            candle.style.opacity = "0";
-
-        });
-
-        flames.forEach(flame => {
-
-            flame.style.opacity = "0";
-
-        });
-
-        sparks.forEach(spark => {
-
-            spark.style.opacity = "0";
-
-        });
-    }
-
-
-    /* ==========================================
-       PAN ANIMATION
-    ========================================== */
-
-    function animatePan() {
-
-        if (!pan) return;
-
-        pan.animate(
-
-            [
-                {
-                    opacity: 0,
-
-                    transform:
-                        "translateX(-50%) translateY(130px) scale(.5) rotate(-8deg)"
-                },
-
-                {
-                    opacity: 1,
-
-                    transform:
-                        "translateX(-50%) translateY(-12px) scale(1.06) rotate(2deg)"
-                },
-
-                {
-                    opacity: 1,
-
-                    transform:
-                        "translateX(-50%) translateY(0) scale(1) rotate(0)"
-                }
-            ],
-
-            {
-                duration: 900,
-
-                fill: "forwards",
-
-                easing:
-                    "cubic-bezier(.16,1,.3,1)"
-            }
-        );
-    }
-
-
-    /* ==========================================
-       BOTTOM CAKE LAYER
-    ========================================== */
-
-    function animateBottomLayer() {
-
-        if (!bottomLayer) return;
-
-        bottomLayer.animate(
-
-            [
-                {
-                    opacity: 0,
-
-                    transform:
-                        "translateX(-50%) translateY(-160px) scale(.65) rotate(-8deg)"
-                },
-
-                {
-                    opacity: 1,
-
-                    transform:
-                        "translateX(-50%) translateY(14px) scale(1.07) rotate(2deg)"
-                },
-
-                {
-                    opacity: 1,
-
-                    transform:
-                        "translateX(-50%) translateY(-4px) scale(.98) rotate(-1deg)"
-                },
-
-                {
-                    opacity: 1,
-
-                    transform:
-                        "translateX(-50%) translateY(0) scale(1) rotate(0)"
-                }
-            ],
-
-            {
-                duration: 950,
-
-                fill: "forwards",
-
-                easing:
-                    "cubic-bezier(.16,1,.3,1)"
-            }
-        );
-    }
-
-
-    /* ==========================================
-       MIDDLE CAKE LAYER
-    ========================================== */
-
-    function animateMiddleLayer() {
-
-        if (!middleLayer) return;
-
-        middleLayer.animate(
-
-            [
-                {
-                    opacity: 0,
-
-                    transform:
-                        "translateX(-50%) translateY(-140px) scale(.65) rotate(7deg)"
-                },
-
-                {
-                    opacity: 1,
-
-                    transform:
-                        "translateX(-50%) translateY(12px) scale(1.07) rotate(-2deg)"
-                },
-
-                {
-                    opacity: 1,
-
-                    transform:
-                        "translateX(-50%) translateY(-3px) scale(.98) rotate(1deg)"
-                },
-
-                {
-                    opacity: 1,
-
-                    transform:
-                        "translateX(-50%) translateY(0) scale(1) rotate(0)"
-                }
-            ],
-
-            {
-                duration: 900,
-
-                fill: "forwards",
-
-                easing:
-                    "cubic-bezier(.16,1,.3,1)"
-            }
-        );
-    }
-
-
-    /* ==========================================
-       TOP CAKE LAYER
-    ========================================== */
-
-    function animateTopLayer() {
-
-        if (!topLayer) return;
-
-        topLayer.animate(
-
-            [
-                {
-                    opacity: 0,
-
-                    transform:
-                        "translateX(-50%) translateY(-150px) scale(.5) rotate(-8deg)"
-                },
-
-                {
-                    opacity: 1,
-
-                    transform:
-                        "translateX(-50%) translateY(12px) scale(1.1) rotate(3deg)"
-                },
-
-                {
-                    opacity: 1,
-
-                    transform:
-                        "translateX(-50%) translateY(-3px) scale(.98) rotate(-1deg)"
-                },
-
-                {
-                    opacity: 1,
-
-                    transform:
-                        "translateX(-50%) translateY(0) scale(1) rotate(0)"
-                }
-            ],
-
-            {
-                duration: 900,
-
-                fill: "forwards",
-
-                easing:
-                    "cubic-bezier(.16,1,.3,1)"
-            }
-        );
-    }
-
-
-    /* ==========================================
-       STRAWBERRY / DECORATION ANIMATION
-    ========================================== */
-
-    function animateBerries() {
-
-        berries.forEach((berry, index) => {
-
-            berry.animate(
-
-                [
-                    {
-                        opacity: 0,
-
-                        transform:
-                            "translateY(-40px) scale(.1) rotate(-30deg)"
-                    },
-
-                    {
-                        opacity: 1,
-
-                        transform:
-                            "translateY(7px) scale(1.2) rotate(8deg)"
-                    },
-
-                    {
-                        opacity: 1,
-
-                        transform:
-                            "translateY(0) scale(1) rotate(0)"
-                    }
-                ],
-
-                {
-                    duration: 650,
-
-                    delay: index * 200,
-
-                    fill: "forwards",
-
-                    easing:
-                        "cubic-bezier(.16,1,.3,1)"
-                }
-            );
-        });
-    }
-
-
-    /* ==========================================
-       CANDLE ANIMATION
-    ========================================== */
-
-    function animateCandles() {
-
-        candles.forEach((candle, index) => {
-
-            candle.animate(
-
-                [
-                    {
-                        opacity: 0,
-
-                        transform:
-                            "translateY(70px) scale(.5)"
-                    },
-
-                    {
-                        opacity: 1,
-
-                        transform:
-                            "translateY(-10px) scale(1.1)"
-                    },
-
-                    {
-                        opacity: 1,
-
-                        transform:
-                            "translateY(0) scale(1)"
-                    }
-                ],
-
-                {
-                    duration: 650,
-
-                    delay: index * 250,
-
-                    fill: "forwards",
-
-                    easing:
-                        "cubic-bezier(.16,1,.3,1)"
-                }
-            );
-        });
-    }
-
-
-    /* ==========================================
-       LIGHT CANDLES
-    ========================================== */
-
-    function lightCandles() {
-
-        flames.forEach((flame, index) => {
-
-            setTimeout(() => {
-
-                flame.animate(
-
-                    [
-                        {
-                            opacity: 0,
-
-                            transform:
-                                "translateX(-50%) scale(.05)"
-                        },
-
-                        {
-                            opacity: 1,
-
-                            transform:
-                                "translateX(-50%) scale(1.25)"
-                        },
-
-                        {
-                            opacity: 1,
-
-                            transform:
-                                "translateX(-50%) scale(1)"
-                        }
-                    ],
-
-                    {
-                        duration: 550,
-
-                        fill: "forwards",
-
-                        easing: "ease-out"
-                    }
-                );
-
-                flame.style.animation =
-                    "flameFlicker .15s infinite alternate";
-
-            }, index * 350);
-        });
-    }
-
-
-    /* ==========================================
-       MAGIC SPARKS
-    ========================================== */
-
-    function animateSparks() {
-
-        sparks.forEach((spark, index) => {
-
-            spark.animate(
-
-                [
-                    {
-                        opacity: 0,
-
-                        transform:
-                            "scale(.1) rotate(0deg)"
-                    },
-
-                    {
-                        opacity: 1,
-
-                        transform:
-                            "scale(1.5) rotate(90deg)"
-                    },
-
-                    {
-                        opacity: .7,
-
-                        transform:
-                            "scale(1) rotate(180deg)"
-                    }
-                ],
-
-                {
-                    duration: 900,
-
-                    delay: index * 160,
-
-                    iterations: 2,
-
-                    fill: "forwards",
-
-                    easing: "ease-out"
-                }
-            );
-        });
-    }
-
-
-    /* ==========================================
-       CONFETTI
-    ========================================== */
-
-    function confettiBurst(amount = 180) {
-
-        if (!confetti) return;
-
-        const colors = [
-            "#ff4fb9",
-            "#8b65ff",
-            "#4bdcff",
-            "#ffd45c",
-            "#ff6c7a",
-            "#72e8a0"
-        ];
-
-        for (let i = 0; i < amount; i++) {
-
-            const piece =
-                document.createElement("span");
-
-            piece.className =
-                "confetti-piece";
-
-            piece.style.left =
-                Math.random() * 100 + "%";
-
-            piece.style.background =
-                colors[
-                    Math.floor(
-                        Math.random() *
-                        colors.length
-                    )
-                ];
-
-            piece.style.animationDuration =
-                3 + Math.random() * 4 + "s";
-
-            piece.style.animationDelay =
-                Math.random() * .8 + "s";
-
-            piece.style.transform =
-                `rotate(${Math.random() * 360}deg)`;
-
-            confetti.appendChild(piece);
-
-            setTimeout(() => {
-
-                piece.remove();
-
-            }, 8000);
-        }
-    }
-
-
-    /* ==========================================
-       COMPLETE CAKE SHOW
-    ========================================== */
-
-    function buildCake() {
-
-        resetCake();
-
-        if (message) {
-
-            message.textContent =
-                "Preparing your birthday cake... ✨";
-        }
-
-
-        // 1. PAN
-
-        setTimeout(() => {
-
-            animatePan();
-
-        }, 150);
-
-
-        // 2. BOTTOM CAKE
-
-        setTimeout(() => {
-
-            animateBottomLayer();
-
-        }, 800);
-
-
-        // 3. MIDDLE CAKE
-
-        setTimeout(() => {
-
-            animateMiddleLayer();
-
-        }, 1500);
-
-
-        // 4. TOP CAKE
-
-        setTimeout(() => {
-
-            animateTopLayer();
-
-        }, 2200);
-
-
-        // 5. DECORATIONS
-
-        setTimeout(() => {
-
-            animateBerries();
-
-        }, 2900);
-
-
-        // 6. CANDLES
-
-        setTimeout(() => {
-
-            animateCandles();
-
-        }, 3400);
-
-
-        // 7. LIGHT CANDLES
-
-        setTimeout(() => {
-
-            lightCandles();
-
-        }, 4100);
-
-
-        // 8. MAGIC
-
-        setTimeout(() => {
-
-            animateSparks();
-
-            confettiBurst(250);
-
-            if (message) {
-
-                message.textContent =
-                    `✨ HAPPY BIRTHDAY, ${BIRTHDAY_NAME}! ✨`;
-            }
-
-        }, 5000);
-    }
-
-
-    /* ==========================================
-       OPEN SURPRISE
-    ========================================== */
-
-    if (openBtn) {
-
-        openBtn.addEventListener("click", () => {
-
-            console.log("Birthday surprise opened!");
-
-            // Hide opening screen
-
-            if (opening) {
-
-                opening.classList.add("hide");
-            }
-
-
-            // Show main birthday page
-
-            if (app) {
-
-                app.classList.remove("hidden");
-
-                app.style.opacity = "1";
-
-                app.style.visibility = "visible";
-
-                app.style.pointerEvents = "auto";
-            }
-
-
-            // Start celebration
-
-            confettiBurst(120);
-
-
-            setTimeout(() => {
-
-                buildCake();
-
-            }, 500);
-
-        });
-    }
-
-
-    /* ==========================================
-       REPLAY BUTTON
-    ========================================== */
-
-    if (replayBtn) {
-
-        replayBtn.addEventListener("click", () => {
-
-            buildCake();
-
-            confettiBurst(160);
-
-        });
-    }
-
-
-    /* ==========================================
-       MAKE A WISH
-    ========================================== */
-
-    if (wishBtn) {
-
-        wishBtn.addEventListener("click", () => {
-
-            if (message) {
-
-                message.textContent =
-                    `💫 Make a wish, ${BIRTHDAY_NAME}!`;
-            }
-
-
-            // Blow out candles
-
-            flames.forEach((flame, index) => {
-
-                setTimeout(() => {
-
-                    flame.animate(
-
-                        [
-                            {
-                                opacity: 1,
-
-                                transform:
-                                    "translateX(-50%) scale(1)"
-                            },
-
-                            {
-                                opacity: 0,
-
-                                transform:
-                                    "translateX(-50%) scale(.05)"
-                            }
-                        ],
-
-                        {
-                            duration: 450,
-
-                            fill: "forwards"
-                        }
-                    );
-
-                }, index * 250);
-
-            });
-
-
-            // Confetti
-
-            setTimeout(() => {
-
-                confettiBurst(300);
-
-            }, 600);
-
-
-            // Relight candles
-
-            setTimeout(() => {
-
-                flames.forEach(flame => {
-
-                    flame.style.opacity = "1";
-
-                });
-
-                lightCandles();
-
-                if (message) {
-
-                    message.textContent =
-                        `✨ May your wish come true, ${BIRTHDAY_NAME}!`;
-
-                }
-
-            }, 4500);
-
-        });
-    }
-
-
-    /* ==========================================
-       SIMPLE BIRTHDAY SOUND
-    ========================================== */
-
-    let audioContext = null;
-
-    let soundEnabled = false;
-
-    let soundTimer = null;
-
-
-    function playNote(
-        frequency,
-        startTime,
-        duration
-    ) {
-
-        if (!audioContext) return;
-
-        const oscillator =
-            audioContext.createOscillator();
-
-        const gain =
-            audioContext.createGain();
-
-
-        oscillator.type = "sine";
-
-        oscillator.frequency.value =
-            frequency;
-
-
-        gain.gain.setValueAtTime(
-            0.001,
-            startTime
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            0.06,
-            startTime + 0.03
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            0.001,
-            startTime + duration
-        );
-
-
-        oscillator
-            .connect(gain)
-            .connect(
-                audioContext.destination
-            );
-
-
-        oscillator.start(startTime);
-
-        oscillator.stop(
-            startTime +
-            duration +
-            0.05
-        );
-    }
-
-
-    function birthdayJingle() {
-
-        if (!soundEnabled) return;
-
-        if (!audioContext) return;
-
-
-        const now =
-            audioContext.currentTime;
-
-
-        const notes = [
-            523.25,
-            523.25,
-            587.33,
-            523.25,
-            698.46,
-            659.25
-        ];
-
-
-        notes.forEach((note, index) => {
-
-            playNote(
-                note,
-                now + index * 0.28,
-                0.24
-            );
-
-        });
-    }
-
-
-    if (soundBtn) {
-
-        soundBtn.addEventListener(
-            "click",
-            async () => {
-
-                soundEnabled =
-                    !soundEnabled;
-
-
-                if (soundEnabled) {
-
-                    if (!audioContext) {
-
-                        audioContext =
-                            new (
-                                window.AudioContext ||
-                                window.webkitAudioContext
-                            )();
-                    }
-
-
-                    if (
-                        audioContext.state ===
-                        "suspended"
-                    ) {
-
-                        await audioContext.resume();
-                    }
-
-
-                    soundBtn.textContent =
-                        "♫ SOUND ON";
-
-
-                    birthdayJingle();
-
-
-                    soundTimer =
-                        setInterval(
-                            birthdayJingle,
-                            6000
-                        );
-
-                } else {
-
-                    soundBtn.textContent =
-                        "♫ SOUND OFF";
-
-
-                    clearInterval(
-                        soundTimer
-                    );
-                }
-
-            }
-        );
-    }
-
-
-    /* ==========================================
-       INITIALIZE
-    ========================================== */
-
-    resetCake();
-
-    console.log(
-        "🎂 Premium Birthday Website Loaded!"
-    );
-
+// ====== EDIT ME ======
+const CONFIG = {
+  words: ['Memories','YOU ARE MAGIC','LOVE OF MY LIFE','I LOVE YOU','CELEBRATING YOU','FOREVER YOURS'],
+  // Your personal messages (they rotate at the bottom)
+  messages: ['Love of my life','The longer we are together, the more I love you','You are my favorite place in the universe','Forever, you and me'],
+  // Each star opens a photo. Put an image data URI or leave photo empty for a placeholder.
+  stars: [
+    {photo:'photos/one.jpg', caption:'kaon ka? ♥'},
+    {photo:'photos/two.jpg', caption:'The trip I will never forget'},
+    {photo:'photos/three.jpg', caption:'You, laughing — my favorite sound'},
+    {photo:'photos/4.jpg', caption:'Every moment with you is a gift'},
+    {photo:'photos/five.jpg', caption:'Our first day together ♥'}
+  ]
+};
+// =====================
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 200);
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth, innerHeight);
+document.body.prepend(renderer.domElement);
+
+function dotTexture(){
+  const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d');
+  const r=g.createRadialGradient(32,32,0,32,32,32);
+  r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(.3,'rgba(255,255,255,.6)');r.addColorStop(1,'rgba(255,255,255,0)');
+  g.fillStyle=r;g.fillRect(0,0,64,64);return new THREE.CanvasTexture(c);
+}
+const dot = dotTexture();
+
+// Galaxy
+const N = innerWidth<600 ? 18000 : 30000, arms = 3;
+const gp = new Float32Array(N*3), gc = new Float32Array(N*3);
+const inner = new THREE.Color('#ff2f90'), outer = new THREE.Color('#7a2cff'), core = new THREE.Color('#ffd0e6');
+for(let i=0;i<N;i++){
+  const r = Math.pow(Math.random(),1.6)*15 + .5;
+  const a = (i%arms)/arms*Math.PI*2 + r*.55;
+  const s = (Math.random()-.5)*Math.pow(Math.random(),2)*3*(r/6+.3);
+  gp[i*3]   = Math.cos(a)*r + s;
+  gp[i*3+1] = (Math.random()-.5)*.5*(1.2-r/16);
+  gp[i*3+2] = Math.sin(a)*r + (Math.random()-.5)*Math.pow(Math.random(),2)*3*(r/6+.3);
+  const c = core.clone().lerp(inner, Math.min(r/3,1)).lerp(outer, Math.max((r-5)/12,0));
+  gc.set([c.r,c.g,c.b], i*3);
+}
+const gGeo = new THREE.BufferGeometry();
+gGeo.setAttribute('position', new THREE.BufferAttribute(gp,3));
+gGeo.setAttribute('color', new THREE.BufferAttribute(gc,3));
+const galaxy = new THREE.Points(gGeo, new THREE.PointsMaterial({size:.12,map:dot,vertexColors:true,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
+scene.add(galaxy);
+const hole = new THREE.Mesh(new THREE.SphereGeometry(.55,32,32), new THREE.MeshBasicMaterial({color:0x000000}));
+scene.add(hole);
+
+// Particle heart
+const HN = 7000, hp = new Float32Array(HN*3);
+for(let i=0;i<HN;i++){
+  const t = Math.random()*Math.PI*2, k = Math.random()<.45 ? 1 : Math.pow(Math.random(),.5);
+  const x = 16*Math.pow(Math.sin(t),3), y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+  hp[i*3]=x*.2*k+(Math.random()-.5)*.15; hp[i*3+1]=y*.2*k+(Math.random()-.5)*.15; hp[i*3+2]=(Math.random()-.5)*1.1*k;
+}
+const hGeo = new THREE.BufferGeometry(); hGeo.setAttribute('position', new THREE.BufferAttribute(hp,3));
+const heart = new THREE.Points(hGeo, new THREE.PointsMaterial({size:.14,map:dot,color:0xff5fb0,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
+heart.position.y = 5.5; scene.add(heart);
+
+// Floating hearts + words (sprites orbiting the galaxy)
+function textTex(txt,font,color,w,h){
+  const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');
+  g.font=font;g.textAlign='center';g.textBaseline='middle';g.shadowColor='#ff2f90';g.shadowBlur=18;g.fillStyle=color;g.fillText(txt,w/2,h/2);
+  return new THREE.CanvasTexture(c);
+}
+const heartTex = textTex('♥','bold 90px sans-serif','#ff3d8f',128,128);
+const floaters = [];
+for(let i=0;i<40;i++){
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({map:heartTex,transparent:true,depthWrite:false}));
+  s.scale.setScalar(.5+Math.random()*.7);
+  s.userData={angle:Math.random()*Math.PI*2,radius:4+Math.random()*12,speed:.002+Math.random()*.005,yOffset:(Math.random()-.5)*5,bob:Math.random()*6};
+  scene.add(s); floaters.push(s);
+}
+CONFIG.words.forEach((w,i)=>{
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({map:textTex(w,'bold 64px Georgia','#ffd9ea',512,128),transparent:true,depthWrite:false}));
+  s.scale.set(4.2,1.05,1);
+  s.userData={angle:i/CONFIG.words.length*Math.PI*2,radius:6+(i%3)*2.6,speed:.0025,yOffset:.6+(i%2)*1.2,bob:i};
+  scene.add(s); floaters.push(s);
 });
+
+// Camera orbit (drag / touch) + auto spin
+let yaw=0, pitch=.55, dist=34, targetDist=34, drag=false, lx=0, ly=0, entered=false;
+const el = renderer.domElement;
+// Clickable stars -> photo
+const starTex = textTex('★','bold 100px sans-serif','#fff0a0',128,128);
+const stars = [];
+function placeholder(i){
+  const c=document.createElement('canvas');c.width=600;c.height=720;const g=c.getContext('2d');
+  const gr=g.createLinearGradient(0,0,600,720);gr.addColorStop(0,'#ff4fa3');gr.addColorStop(1,'#5b1fb8');
+  g.fillStyle=gr;g.fillRect(0,0,600,720);
+  g.font='bold 260px sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillStyle='rgba(255,255,255,.9)';g.fillText('♥',300,320);
+  g.font='28px Georgia';g.fillText('Your photo #'+(i+1)+' goes here',300,560);
+  return c.toDataURL('image/jpeg',.8);
+}
+CONFIG.stars.forEach((d,i)=>{
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({map:starTex,transparent:true,depthWrite:false}));
+  const base = 1.1; s.scale.setScalar(base);
+  s.userData={star:true,base,idx:i,angle:i/CONFIG.stars.length*Math.PI*2+.4,radius:5+(i%3)*3.2,speed:.0018+i*.0004,yOffset:1+(i%2)*1.6,bob:i*1.7};
+  scene.add(s); floaters.push(s); stars.push(s);
+});
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+const photo=document.getElementById('photo'), pimg=document.getElementById('pimg'), cap=document.getElementById('cap');
+function openStar(i){const d=CONFIG.stars[i];pimg.src=d.photo||placeholder(i);cap.textContent=d.caption||'';photo.classList.add('on')}
+document.getElementById('close').onclick=()=>photo.classList.remove('on');
+photo.addEventListener('pointerdown',e=>{if(e.target===photo)photo.classList.remove('on')});
+let sx=0, sy=0;
+el.addEventListener('pointerdown',e=>{drag=true;lx=sx=e.clientX;ly=sy=e.clientY});
+addEventListener('pointerup',e=>{
+  drag=false;
+  if(!entered||wasPinch||Math.hypot(e.clientX-sx,e.clientY-sy)>8||e.target!==el)return;
+  ndc.set(e.clientX/innerWidth*2-1,-(e.clientY/innerHeight)*2+1);
+  ray.setFromCamera(ndc,camera);
+  const hit=ray.intersectObjects(stars)[0];
+  if(hit)openStar(hit.object.userData.idx);
+});
+let pinch=0, wasPinch=false;
+const pd=e=>Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+el.addEventListener('touchstart',e=>{if(e.touches.length===2){pinch=pd(e);wasPinch=true;drag=false}},{passive:true});
+el.addEventListener('touchmove',e=>{if(e.touches.length===2&&pinch&&entered){const d=pd(e);targetDist=Math.max(8,Math.min(40,targetDist*pinch/d));pinch=d}},{passive:true});
+el.addEventListener('touchend',e=>{if(e.touches.length<2)pinch=0;if(!e.touches.length)setTimeout(()=>wasPinch=false,80)},{passive:true});
+addEventListener('pointermove',e=>{if(!drag||pinch)return;yaw-=(e.clientX-lx)*.006;pitch=Math.max(.1,Math.min(1.35,pitch+(e.clientY-ly)*.004));lx=e.clientX;ly=e.clientY});
+el.addEventListener('wheel',e=>{if(entered)targetDist=Math.max(8,Math.min(40,targetDist+e.deltaY*.02))});
+
+// UI
+const intro=document.getElementById('intro'), msg=document.getElementById('msg'), back=document.getElementById('back');
+let mi=0, timer;
+function showMsg(){msg.classList.remove('on');setTimeout(()=>{msg.textContent=CONFIG.messages[mi++%CONFIG.messages.length];msg.classList.add('on')},900)}
+document.getElementById('enter').onclick=()=>{
+  entered=true;targetDist=19;intro.classList.add('hide');back.classList.add('on');document.getElementById('hint').classList.add('on');showMsg();timer=setInterval(showMsg,5200);
+};
+back.onclick=()=>{
+  entered=false;targetDist=34;intro.classList.remove('hide');back.classList.remove('on');msg.classList.remove('on');document.getElementById('hint').classList.remove('on');photo.classList.remove('on');clearInterval(timer);
+};
+
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+
+let t=0;
+(function loop(){
+  requestAnimationFrame(loop); t+=.016;
+  if(!drag) yaw += entered ? .0012 : .0025;
+  dist += (targetDist-dist)*.03;
+  camera.position.set(Math.sin(yaw)*Math.cos(pitch)*dist, Math.sin(pitch)*dist, Math.cos(yaw)*Math.cos(pitch)*dist);
+  camera.lookAt(0,entered?2.5:0,0);
+  galaxy.rotation.y += .0012;
+  const beat = 1+Math.sin(t*3)*.04+Math.max(0,Math.sin(t*3))*.03;
+  heart.scale.setScalar(beat); heart.rotation.y = Math.sin(t*.4)*.5;
+  floaters.forEach(s=>{
+    const u=s.userData; u.angle+=u.speed;
+    s.position.set(Math.cos(u.angle)*u.radius, u.yOffset+Math.sin(t+u.bob)*.35, Math.sin(u.angle)*u.radius);
+    if(u.star)s.scale.setScalar(u.base*(1+Math.sin(t*3+u.bob)*.18));
+  });
+  renderer.render(scene,camera);
+})();
