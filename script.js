@@ -13,6 +13,7 @@ const CONFIG = {
   ]
 };
 // =====================
+const SPIN = 3; // orbit speed multiplier (raise = faster)
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 200);
 const renderer = new THREE.WebGLRenderer({antialias:true});
@@ -28,24 +29,54 @@ function dotTexture(){
 }
 const dot = dotTexture();
 
-// Galaxy
+// Galaxy (animated particles: each star-dot orbits, inner ones faster, and twinkles)
 const N = innerWidth<600 ? 18000 : 30000, arms = 3;
-const gp = new Float32Array(N*3), gc = new Float32Array(N*3);
+const aR=new Float32Array(N), aA=new Float32Array(N), aY=new Float32Array(N), aS=new Float32Array(N*2), aRand=new Float32Array(N), gc=new Float32Array(N*3);
 const inner = new THREE.Color('#ff2f90'), outer = new THREE.Color('#7a2cff'), core = new THREE.Color('#ffd0e6');
 for(let i=0;i<N;i++){
   const r = Math.pow(Math.random(),1.6)*15 + .5;
-  const a = (i%arms)/arms*Math.PI*2 + r*.55;
-  const s = (Math.random()-.5)*Math.pow(Math.random(),2)*3*(r/6+.3);
-  gp[i*3]   = Math.cos(a)*r + s;
-  gp[i*3+1] = (Math.random()-.5)*.5*(1.2-r/16);
-  gp[i*3+2] = Math.sin(a)*r + (Math.random()-.5)*Math.pow(Math.random(),2)*3*(r/6+.3);
+  aR[i]=r; aA[i]=(i%arms)/arms*Math.PI*2 + r*.55;
+  const sp = Math.pow(Math.random(),2)*3*(r/6+.3);
+  aS[i*2]=(Math.random()-.5)*sp; aS[i*2+1]=(Math.random()-.5)*sp;
+  aY[i]=(Math.random()-.5)*.5*(1.2-r/16); aRand[i]=Math.random();
   const c = core.clone().lerp(inner, Math.min(r/3,1)).lerp(outer, Math.max((r-5)/12,0));
   gc.set([c.r,c.g,c.b], i*3);
 }
 const gGeo = new THREE.BufferGeometry();
-gGeo.setAttribute('position', new THREE.BufferAttribute(gp,3));
+gGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(N*3),3));
+gGeo.setAttribute('aR', new THREE.BufferAttribute(aR,1));
+gGeo.setAttribute('aA', new THREE.BufferAttribute(aA,1));
+gGeo.setAttribute('aY', new THREE.BufferAttribute(aY,1));
+gGeo.setAttribute('aS', new THREE.BufferAttribute(aS,2));
+gGeo.setAttribute('aRand', new THREE.BufferAttribute(aRand,1));
 gGeo.setAttribute('color', new THREE.BufferAttribute(gc,3));
-const galaxy = new THREE.Points(gGeo, new THREE.PointsMaterial({size:.12,map:dot,vertexColors:true,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));
+const galaxyMat = new THREE.ShaderMaterial({
+  uniforms:{uTime:{value:0}, uSize:{value:.16}, uScale:{value:innerHeight*Math.min(devicePixelRatio,2)*.5}, uSpeed:{value:1.0}},
+  vertexShader:`
+    attribute float aR; attribute float aA; attribute float aY; attribute vec2 aS; attribute float aRand;
+    uniform float uTime, uSize, uScale, uSpeed;
+    varying vec3 vC; varying float vA;
+    void main(){
+      float ang = aA + uTime * uSpeed * (2.2 / (0.8 + aR*0.45));
+      float rr = aR + aS.x + sin(uTime*.8 + aRand*40.)*.12;
+      vec3 p = vec3(cos(ang)*rr - sin(ang)*aS.y, aY + sin(uTime*1.6 + aRand*60.)*.1, sin(ang)*rr + cos(ang)*aS.y);
+      vec4 mv = modelViewMatrix * vec4(p,1.);
+      float tw = .75 + .5*sin(uTime*3. + aRand*90.);
+      gl_PointSize = uSize * (.6 + aRand) * tw * uScale / -mv.z;
+      gl_Position = projectionMatrix * mv;
+      vC = color; vA = .55 + .45*sin(uTime*2.2 + aRand*70.);
+    }`,
+  fragmentShader:`
+    varying vec3 vC; varying float vA;
+    void main(){
+      float d = length(gl_PointCoord-.5);
+      if(d>.5) discard;
+      gl_FragColor = vec4(vC, smoothstep(.5,0.,d)*vA);
+    }`,
+  vertexColors:true, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending
+});
+const galaxy = new THREE.Points(gGeo, galaxyMat);
+galaxy.frustumCulled = false;
 scene.add(galaxy);
 const hole = new THREE.Mesh(new THREE.SphereGeometry(.55,32,32), new THREE.MeshBasicMaterial({color:0x000000}));
 scene.add(hole);
@@ -136,20 +167,20 @@ back.onclick=()=>{
   entered=false;targetDist=34;intro.classList.remove('hide');back.classList.remove('on');msg.classList.remove('on');document.getElementById('hint').classList.remove('on');photo.classList.remove('on');clearInterval(timer);
 };
 
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);galaxyMat.uniforms.uScale.value=innerHeight*Math.min(devicePixelRatio,2)*.5});
 
 let t=0;
 (function loop(){
   requestAnimationFrame(loop); t+=.016;
-  if(!drag) yaw += entered ? .0012 : .0025;
+  if(!drag) yaw += entered ? .003 : .005;
   dist += (targetDist-dist)*.03;
   camera.position.set(Math.sin(yaw)*Math.cos(pitch)*dist, Math.sin(pitch)*dist, Math.cos(yaw)*Math.cos(pitch)*dist);
   camera.lookAt(0,entered?2.5:0,0);
-  galaxy.rotation.y += .0012;
+  galaxyMat.uniforms.uTime.value = t;
   const beat = 1+Math.sin(t*3)*.04+Math.max(0,Math.sin(t*3))*.03;
-  heart.scale.setScalar(beat); heart.rotation.y = Math.sin(t*.4)*.5;
+  heart.scale.setScalar(beat); heart.rotation.y += .012;
   floaters.forEach(s=>{
-    const u=s.userData; u.angle+=u.speed;
+    const u=s.userData; u.angle+=u.speed*SPIN;
     s.position.set(Math.cos(u.angle)*u.radius, u.yOffset+Math.sin(t+u.bob)*.35, Math.sin(u.angle)*u.radius);
     if(u.star)s.scale.setScalar(u.base*(1+Math.sin(t*3+u.bob)*.18));
   });
