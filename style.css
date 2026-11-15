@@ -1,0 +1,20 @@
+:root{--bg:#050005;--ink:#ffe3ef;--pink:#ff4fa3;--card:rgba(40,8,24,.72);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif;overflow:hidden}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.card{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(86vw,360px);padding:28px 24px;text-align:center;background:var(--card);border:1px solid rgba(255,120,180,.35);border-radius:18px;backdrop-filter:blur(10px);box-shadow:0 0 60px rgba(255,60,150,.25);transition:opacity .9s,transform .9s}
+.card.hide{opacity:0;pointer-events:none;transform:translate(-50%,-46%) scale(.96)}
+h1{font-size:30px;line-height:1.15;margin:0 0 12px;font-weight:700}
+p{margin:0 0 20px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;opacity:.8}
+button{font:inherit;font-size:13px;color:#fff;border:0;border-radius:999px;padding:11px 22px;cursor:pointer;background:linear-gradient(90deg,#ff4fa3,#ff7ab8);box-shadow:0 4px 24px rgba(255,79,163,.5)}
+#msg{position:fixed;left:0;right:0;bottom:calc(36px + env(safe-area-inset-bottom,0px));text-align:center;padding:0 24px;font-size:20px;font-style:italic;text-shadow:0 0 18px #ff2f90;opacity:0;transition:opacity 1.2s}
+#msg.on{opacity:1}
+#back{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:14px;opacity:0;pointer-events:none;transition:opacity .8s;padding:8px 14px;background:rgba(255,255,255,.12);box-shadow:none}
+#back.on{opacity:1;pointer-events:auto}
+#hint{position:fixed;left:0;right:0;top:calc(18px + env(safe-area-inset-top,0px));text-align:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:0;transition:opacity .8s;pointer-events:none;color:#ffe9a8}
+#hint.on{opacity:.85}
+#photo{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(5,0,5,.78);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .5s;padding:20px;box-sizing:border-box}
+#photo.on{opacity:1;pointer-events:auto}
+#frame{max-width:min(88vw,380px);text-align:center;background:var(--card);border:1px solid rgba(255,230,160,.45);border-radius:18px;padding:14px 14px 18px;box-shadow:0 0 60px rgba(255,200,90,.25);transform:scale(.9);transition:transform .5s}
+#photo.on #frame{transform:scale(1)}
+#frame img{display:block;max-width:100%;max-height:60vh;border-radius:12px;margin:0 auto 12px}
+#cap{font-size:17px;font-style:italic;margin:0 0 14px}
